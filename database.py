@@ -9,7 +9,7 @@ async def init_db():
             database=client["healthsync"],
             document_models=[Users, Appointment, Prescription, Document],
         )
-        print("✅ Database initialized successfully!")
+        print("Database initialized successfully!")
     except Exception as e:
-        print(f"❌ Database connection failed: {e}")
+        print(f"❌❌❌❌ Database connection failed ❌❌❌❌: {e}")
 

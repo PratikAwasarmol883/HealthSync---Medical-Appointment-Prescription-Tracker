@@ -5,7 +5,7 @@ from fastapi.encoders import jsonable_encoder  # ✅ important
 from models import request_body
 from models.users import Users
 
-router = UserRouter(tags=["user"])
+router = UserRouter(tags=["Users"])
 
 @router.post(
     path = "",
