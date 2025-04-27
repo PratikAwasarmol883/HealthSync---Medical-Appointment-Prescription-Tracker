@@ -1,9 +1,14 @@
-from fastapi import APIRouter as UserRouter
+from typing import Annotated
+from fastapi import APIRouter as UserRouter, Depends
 from fastapi import Request, Body
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder  # ✅ important
 from models import request_body
 from models.users import Users
+from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordRequestForm
+
+bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 router = UserRouter(tags=["Users"])
 
@@ -15,8 +20,17 @@ async def create_user(
     user: request_body.CreateUserRequestBody = Body(..., description="Create a new user.")
 ):
     try:
-    
-        user_obj = Users(**user.dict())
+        user_obj = Users(
+            full_name = user.full_name,
+            email= user.email,
+            username = user.username,
+            phone_number = user.phone_number,
+            role = user.role,
+            gender = user.gender,
+            date_of_birth = user.date_of_birth,
+            address = user.address,
+            hashed_password = bcrypt_context.hash(user.password)
+        )
         res = await user_obj.create()
 
         response_data = jsonable_encoder(res)
